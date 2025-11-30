@@ -1,4 +1,4 @@
-import { Search, Plus } from 'lucide-react';
+import { Search, Plus, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const PLACEHOLDERS = [
@@ -10,7 +10,7 @@ const PLACEHOLDERS = [
 
 export function Hero({ onSearch }) {
     const [query, setQuery] = useState('');
-    const [activeTab, setActiveTab] = useState('search'); // 'search' or 'register'
+    const [activeTab, setActiveTab] = useState('search');
     const [placeholder, setPlaceholder] = useState('');
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
@@ -56,73 +56,84 @@ export function Hero({ onSearch }) {
         if (activeTab === 'search') {
             onSearch(query);
         } else {
-            // Trigger the "Register" intent
             onSearch('cadastrar');
         }
     };
 
     return (
-        <div className="w-full flex flex-col items-center justify-center px-4 min-h-[45vh] relative z-10">
-            {/* Tabs */}
-            <div className="flex space-x-1 mb-12 p-1.5 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl animate-fade-in-up">
-                <button
-                    onClick={() => setActiveTab('search')}
-                    className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-500 ${activeTab === 'search'
-                            ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] scale-105'
-                            : 'text-gray-400 hover:text-white hover:bg-white/5'
-                        }`}
-                >
-                    Buscar Serviço
-                </button>
-                <button
-                    onClick={() => setActiveTab('register')}
-                    className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-500 ${activeTab === 'register'
-                            ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] scale-105'
-                            : 'text-gray-400 hover:text-white hover:bg-white/5'
-                        }`}
-                >
-                    Cadastrar Serviço
-                </button>
-            </div>
+        <div className="w-full flex flex-col items-center justify-center min-h-[60vh] relative z-10">
+            {/* Main Glass Card */}
+            <div className="glass-frosted rounded-[3rem] p-12 w-full max-w-4xl relative overflow-hidden animate-fade-in-up shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
 
-            {/* Content */}
-            <div className="w-full max-w-3xl relative">
-                {activeTab === 'search' ? (
-                    <form onSubmit={handleSubmit} className="input-premium-container group relative animate-fade-in-up animate-float">
-                        <Search className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-white/50 group-focus-within:text-white transition-all duration-500 z-10" />
-                        <input
-                            type="text"
-                            className="input-premium"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            autoFocus
-                            placeholder={placeholder + (isPaused ? '|' : '')}
-                        />
-                        {/* Breathing Glow Behind */}
-                        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    </form>
-                ) : (
-                    <div className="animate-fade-in-up flex flex-col items-center text-center space-y-6">
-                        <div className="glass-panel p-12 rounded-[2.5rem] max-w-xl w-full border border-white/10 shadow-2xl relative overflow-hidden group">
-                            {/* Background Glow */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                {/* Decorative Background Elements inside Card */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 blur-[80px] rounded-full pointer-events-none"></div>
 
-                            <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">Divulgue seu trabalho</h2>
-                            <p className="text-gray-400 mb-8 text-lg font-light">Junte-se a milhares de profissionais e encontre novos clientes hoje mesmo.</p>
+                <div className="relative z-10 flex flex-col items-center text-center">
+                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
+                        Encontre o serviço <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300">
+                            perfeito para você
+                        </span>
+                    </h1>
 
+                    <p className="text-lg text-white/70 mb-10 max-w-xl font-light">
+                        Conectamos você aos melhores profissionais da região. Simples, rápido e seguro.
+                    </p>
+
+                    {/* Tabs */}
+                    <div className="flex p-1.5 bg-black/20 backdrop-blur-md rounded-full border border-white/10 mb-8">
+                        <button
+                            onClick={() => setActiveTab('search')}
+                            className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === 'search'
+                                    ? 'bg-white text-black shadow-lg'
+                                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
+                            Buscar
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('register')}
+                            className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === 'register'
+                                    ? 'bg-white text-black shadow-lg'
+                                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
+                            Cadastrar
+                        </button>
+                    </div>
+
+                    {/* Action Area */}
+                    <div className="w-full max-w-2xl">
+                        {activeTab === 'search' ? (
+                            <form onSubmit={handleSubmit} className="relative group">
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
+                                <div className="relative flex items-center">
+                                    <Search className="absolute left-6 text-white/50 w-6 h-6" />
+                                    <input
+                                        type="text"
+                                        className="w-full bg-white/10 border border-white/10 rounded-full py-5 pl-16 pr-6 text-lg text-white placeholder-white/40 focus:outline-none focus:bg-white/20 focus:border-white/30 transition-all shadow-inner"
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                        placeholder={placeholder + (isPaused ? '|' : '')}
+                                        autoFocus
+                                    />
+                                    <button type="submit" className="absolute right-3 bg-white text-black p-3 rounded-full hover:scale-105 transition-transform shadow-lg">
+                                        <ArrowRight className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
                             <button
                                 onClick={() => onSearch('cadastrar')}
-                                className="btn-premium w-full flex items-center justify-center gap-3 text-lg py-4 relative overflow-hidden"
+                                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-lg font-bold py-5 rounded-full shadow-lg hover:shadow-purple-500/25 transition-all flex items-center justify-center gap-3 group"
                             >
-                                <span className="relative z-10 flex items-center gap-2">
-                                    <Plus className="w-5 h-5" />
-                                    Começar Cadastro
-                                </span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-700"></div>
+                                <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform" />
+                                Começar Cadastro Gratuito
                             </button>
-                        </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );

@@ -30,8 +30,6 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                 formattedPrice = `R$ ${formattedPrice}`;
             }
 
-            console.log('Attempting to register service:', { ...formData, tags: tagsArray });
-
             const { data, error } = await supabase
                 .from('services')
                 .insert([
@@ -48,18 +46,14 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                 ])
                 .select();
 
-            if (error) {
-                console.error('Supabase Insert Error:', error);
-                throw error;
-            }
+            if (error) throw error;
 
-            console.log('Service registered successfully:', data);
             alert('Serviço cadastrado com sucesso!');
             setFormData({ title: '', category: '', description: '', price: '', tags: '' });
             onClose();
         } catch (error) {
             console.error('Error registering service:', error);
-            alert(`Erro ao cadastrar: ${error.message || 'Verifique o console para mais detalhes.'}`);
+            alert(`Erro ao cadastrar: ${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -67,53 +61,53 @@ export function RegisterServiceModal({ isOpen, onClose }) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-fade-in-up"
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-fade-in"
             onClick={onClose}
         >
             <div
-                className="modal-glass rounded-[2rem] w-full max-w-lg overflow-hidden shadow-2xl transform transition-all scale-100"
+                className="modal-glass rounded-[2.5rem] w-full max-w-lg overflow-hidden shadow-2xl transform transition-all scale-100 relative"
                 onClick={(e) => e.stopPropagation()}
             >
+                {/* Decorative Glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
+
                 {/* Header */}
-                <div className="p-8 border-b border-white/5 flex justify-between items-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-50"></div>
-                    <h3 className="text-2xl font-bold text-white tracking-tight relative z-10">Cadastrar Serviço</h3>
+                <div className="p-8 pb-4 flex justify-between items-center relative z-10">
+                    <div>
+                        <h3 className="text-2xl font-bold text-white tracking-tight">Novo Serviço</h3>
+                        <p className="text-sm text-gray-400">Preencha os dados para divulgar</p>
+                    </div>
                     <button
                         onClick={onClose}
-                        className="text-white/50 hover:text-white hover:bg-white/10 transition-all p-2 rounded-full relative z-10"
+                        className="text-white/50 hover:text-white hover:bg-white/10 transition-all p-2 rounded-full"
                     >
                         <X className="h-6 w-6" />
                     </button>
                 </div>
 
                 {/* Form */}
-                <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                    {/* Title */}
-                    <div className="space-y-2 group">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
-                            Nome do Profissional/Empresa
-                        </label>
+                <div className="p-8 pt-4 space-y-5 max-h-[70vh] overflow-y-auto custom-scrollbar relative z-10">
+
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Nome</label>
                         <input
                             type="text"
-                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
+                            className="glass-engraved w-full p-4 rounded-xl text-white placeholder-white/20 focus:outline-none focus:border-white/20 focus:bg-black/20 transition-all"
                             placeholder="Ex: Silva Encanamentos"
                             value={formData.title}
                             onChange={e => setFormData({ ...formData, title: e.target.value })}
                         />
                     </div>
 
-                    {/* Category */}
-                    <div className="space-y-2 group">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
-                            Categoria
-                        </label>
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Categoria</label>
                         <div className="relative">
                             <select
-                                className="input-field-glass w-full appearance-none cursor-pointer focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
+                                className="glass-engraved w-full p-4 rounded-xl text-white appearance-none cursor-pointer focus:outline-none focus:border-white/20 focus:bg-black/20 transition-all"
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
-                                <option value="" className="bg-gray-900 text-gray-400">Selecione...</option>
+                                <option value="" className="bg-gray-900 text-gray-500">Selecione...</option>
                                 <option value="Manutenção" className="bg-gray-900">Manutenção</option>
                                 <option value="Design" className="bg-gray-900">Design</option>
                                 <option value="Tecnologia" className="bg-gray-900">Tecnologia</option>
@@ -122,61 +116,49 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                                 <option value="Limpeza" className="bg-gray-900">Limpeza</option>
                                 <option value="Outros" className="bg-gray-900">Outros</option>
                             </select>
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/50">
-                                ▼
-                            </div>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30">▼</div>
                         </div>
                     </div>
 
-                    {/* Price */}
-                    <div className="space-y-2 group">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
-                            Preço Estimado
-                        </label>
-                        <input
-                            type="text"
-                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
-                            placeholder="Ex: A partir de R$ 100"
-                            value={formData.price}
-                            onChange={e => setFormData({ ...formData, price: e.target.value })}
-                        />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Preço</label>
+                            <input
+                                type="text"
+                                className="glass-engraved w-full p-4 rounded-xl text-white placeholder-white/20 focus:outline-none focus:border-white/20 focus:bg-black/20 transition-all"
+                                placeholder="R$ 0,00"
+                                value={formData.price}
+                                onChange={e => setFormData({ ...formData, price: e.target.value })}
+                            />
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Tags</label>
+                            <input
+                                type="text"
+                                className="glass-engraved w-full p-4 rounded-xl text-white placeholder-white/20 focus:outline-none focus:border-white/20 focus:bg-black/20 transition-all"
+                                placeholder="Separar por vírgula"
+                                value={formData.tags}
+                                onChange={e => setFormData({ ...formData, tags: e.target.value })}
+                            />
+                        </div>
                     </div>
 
-                    {/* Tags */}
-                    <div className="space-y-2 group">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
-                            Tags
-                        </label>
-                        <input
-                            type="text"
-                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
-                            placeholder="Ex: encanador, pia, urgente"
-                            value={formData.tags}
-                            onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Description */}
-                    <div className="space-y-2 group">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
-                            Descrição
-                        </label>
+                    <div className="space-y-1.5">
+                        <label className="text-[10px] font-bold text-white/40 uppercase tracking-widest ml-1">Descrição</label>
                         <textarea
-                            className="input-field-glass w-full min-h-[120px] resize-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
-                            placeholder="Descreva seus serviços..."
+                            className="glass-engraved w-full p-4 rounded-xl text-white placeholder-white/20 min-h-[100px] resize-none focus:outline-none focus:border-white/20 focus:bg-black/20 transition-all"
+                            placeholder="Detalhes do serviço..."
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                         ></textarea>
                     </div>
 
-                    {/* Submit Button */}
                     <button
-                        className="btn-premium w-full mt-8 py-4 text-base font-bold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+                        className="w-full bg-white text-black font-bold py-4 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg mt-4"
                         onClick={handleSubmit}
                         disabled={loading}
                     >
-                        <span className="relative z-10">{loading ? 'Cadastrando...' : 'Cadastrar Serviço'}</span>
-                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        {loading ? 'Processando...' : 'Confirmar Cadastro'}
                     </button>
                 </div>
             </div>
