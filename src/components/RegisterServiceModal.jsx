@@ -67,19 +67,20 @@ export function RegisterServiceModal({ isOpen, onClose }) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-fade-in-up"
             onClick={onClose}
         >
             <div
-                className="modal-glass rounded-[2rem] w-full max-w-lg overflow-hidden animate-fade-in-up"
+                className="modal-glass rounded-[2rem] w-full max-w-lg overflow-hidden shadow-2xl transform transition-all scale-100"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="p-8 border-b border-white/5 flex justify-between items-center">
-                    <h3 className="text-2xl font-bold text-white tracking-tight">Cadastrar Serviço</h3>
+                <div className="p-8 border-b border-white/5 flex justify-between items-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-50"></div>
+                    <h3 className="text-2xl font-bold text-white tracking-tight relative z-10">Cadastrar Serviço</h3>
                     <button
                         onClick={onClose}
-                        className="text-white/50 hover:text-white hover:bg-white/10 transition-all p-2 rounded-full"
+                        className="text-white/50 hover:text-white hover:bg-white/10 transition-all p-2 rounded-full relative z-10"
                     >
                         <X className="h-6 w-6" />
                     </button>
@@ -88,13 +89,13 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                 {/* Form */}
                 <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
                     {/* Title */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1">
+                    <div className="space-y-2 group">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
                             Nome do Profissional/Empresa
                         </label>
                         <input
                             type="text"
-                            className="input-field-glass w-full"
+                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
                             placeholder="Ex: Silva Encanamentos"
                             value={formData.title}
                             onChange={e => setFormData({ ...formData, title: e.target.value })}
@@ -102,13 +103,13 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Category */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1">
+                    <div className="space-y-2 group">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
                             Categoria
                         </label>
                         <div className="relative">
                             <select
-                                className="input-field-glass w-full appearance-none cursor-pointer"
+                                className="input-field-glass w-full appearance-none cursor-pointer focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
@@ -128,13 +129,13 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Price */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1">
+                    <div className="space-y-2 group">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
                             Preço Estimado
                         </label>
                         <input
                             type="text"
-                            className="input-field-glass w-full"
+                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
                             placeholder="Ex: A partir de R$ 100"
                             value={formData.price}
                             onChange={e => setFormData({ ...formData, price: e.target.value })}
@@ -142,13 +143,13 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Tags */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1">
+                    <div className="space-y-2 group">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
                             Tags
                         </label>
                         <input
                             type="text"
-                            className="input-field-glass w-full"
+                            className="input-field-glass w-full focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
                             placeholder="Ex: encanador, pia, urgente"
                             value={formData.tags}
                             onChange={e => setFormData({ ...formData, tags: e.target.value })}
@@ -156,12 +157,12 @@ export function RegisterServiceModal({ isOpen, onClose }) {
                     </div>
 
                     {/* Description */}
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1">
+                    <div className="space-y-2 group">
+                        <label className="text-xs font-bold text-white/60 uppercase tracking-widest ml-1 group-focus-within:text-purple-300 transition-colors">
                             Descrição
                         </label>
                         <textarea
-                            className="input-field-glass w-full min-h-[120px] resize-none"
+                            className="input-field-glass w-full min-h-[120px] resize-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
                             placeholder="Descreva seus serviços..."
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
@@ -170,11 +171,12 @@ export function RegisterServiceModal({ isOpen, onClose }) {
 
                     {/* Submit Button */}
                     <button
-                        className="btn-premium w-full mt-8 py-4 text-base font-bold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-premium w-full mt-8 py-4 text-base font-bold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                         onClick={handleSubmit}
                         disabled={loading}
                     >
-                        {loading ? 'Cadastrando...' : 'Cadastrar Serviço'}
+                        <span className="relative z-10">{loading ? 'Cadastrando...' : 'Cadastrar Serviço'}</span>
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                     </button>
                 </div>
             </div>
