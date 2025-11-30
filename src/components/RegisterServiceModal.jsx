@@ -17,31 +17,49 @@ export function RegisterServiceModal({ isOpen, onClose }) {
     const handleSubmit = async () => {
         setLoading(true);
         try {
+            // Validate inputs
+            if (!formData.title || !formData.category || !formData.description) {
+                throw new Error('Preencha os campos obrigatórios.');
+            }
+
             const tagsArray = formData.tags.split(',').map(t => t.trim()).filter(t => t);
 
-            const { error } = await supabase
+            // Ensure price is a string but maybe add currency symbol if missing
+            let formattedPrice = formData.price;
+            if (!formattedPrice.startsWith('R$')) {
+                formattedPrice = `R$ ${formattedPrice}`;
+            }
+
+            console.log('Attempting to register service:', { ...formData, tags: tagsArray });
+
+            const { data, error } = await supabase
                 .from('services')
                 .insert([
                     {
                         title: formData.title,
                         category: formData.category,
                         description: formData.description,
-                        price: formData.price,
+                        price: formattedPrice,
                         tags: tagsArray,
                         rating: 5.0,
                         reviews: 0,
                         image: 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&q=80&w=400'
                     }
-                ]);
+                ])
+                .select();
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Insert Error:', error);
+                throw error;
+            }
 
+            console.log('Service registered successfully:', data);
             alert('Serviço cadastrado com sucesso!');
             setFormData({ title: '', category: '', description: '', price: '', tags: '' });
             onClose();
         } catch (error) {
             console.error('Error registering service:', error);
-            alert('Erro ao cadastrar. Verifique se configurou o Supabase corretamente.');
+            alert(`Erro ao cadastrar: ${error.message || 'Verifique o console para mais detalhes.'}`);
         } finally {
             setLoading(false);
         }

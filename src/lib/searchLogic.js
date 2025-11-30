@@ -21,33 +21,97 @@ export function detectIntent(query) {
     return INTENT_SEARCH;
 }
 
-// Helper to calculate score (same logic as before)
+// Levenshtein Distance for fuzzy matching
+function levenshteinDistance(a, b) {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+
+    const matrix = [];
+
+    // increment along the first column of each row
+    for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+
+    // increment each column in the first row
+    for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    // Fill in the rest of the matrix
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // substitution
+                    Math.min(
+                        matrix[i][j - 1] + 1, // insertion
+                        matrix[i - 1][j] + 1 // deletion
+                    )
+                );
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
+}
+
+function isFuzzyMatch(text, pattern) {
+    if (!text || !pattern) return false;
+    const lowerText = text.toLowerCase();
+    const lowerPattern = pattern.toLowerCase();
+
+    // Direct match
+    if (lowerText.includes(lowerPattern)) return true;
+
+    // Fuzzy match for words > 3 chars
+    if (lowerPattern.length > 3) {
+        const words = lowerText.split(/\s+/);
+        return words.some(word => {
+            const distance = levenshteinDistance(word, lowerPattern);
+            // Allow 1 edit for every 4 characters
+            const maxDistance = Math.floor(lowerPattern.length / 4) + 1;
+            return distance <= maxDistance;
+        });
+    }
+
+    return false;
+}
+
+// Helper to calculate score
 function calculateScore(service, lowerQuery, queryTokens) {
     let score = 0;
 
-    // Direct matches in title (High weight)
-    if (service.title.toLowerCase().includes(lowerQuery)) score += 10;
+    // Direct matches in title (Very High weight)
+    if (service.title.toLowerCase().includes(lowerQuery)) score += 20;
 
-    // Direct matches in category (Medium weight)
-    if (service.category.toLowerCase().includes(lowerQuery)) score += 5;
+    // Direct matches in category (High weight)
+    if (service.category.toLowerCase().includes(lowerQuery)) score += 10;
 
     // Tag matches (High weight per tag)
     if (service.tags && Array.isArray(service.tags)) {
         service.tags.forEach(tag => {
-            if (lowerQuery.includes(tag.toLowerCase())) score += 8;
+            if (lowerQuery.includes(tag.toLowerCase())) score += 15;
         });
     }
 
-    // Description matches (Low weight)
-    if (service.description.toLowerCase().includes(lowerQuery)) score += 3;
-
     // Fuzzy/Token matching
     queryTokens.forEach(token => {
-        if (service.title.toLowerCase().includes(token)) score += 2;
-        if (service.description.toLowerCase().includes(token)) score += 1;
+        // Title fuzzy match
+        if (isFuzzyMatch(service.title, token)) score += 5;
+
+        // Category fuzzy match
+        if (isFuzzyMatch(service.category, token)) score += 4;
+
+        // Description fuzzy match
+        if (isFuzzyMatch(service.description, token)) score += 2;
+
+        // Tags fuzzy match
         if (service.tags && Array.isArray(service.tags)) {
             service.tags.forEach(tag => {
-                if (tag.toLowerCase().includes(token)) score += 3;
+                if (isFuzzyMatch(tag, token)) score += 6;
             });
         }
     });
@@ -59,7 +123,7 @@ export async function searchServices(query) {
     if (!query) return [];
 
     const lowerQuery = query.toLowerCase();
-    const queryTokens = lowerQuery.split(' ').filter(t => t.length > 2);
+    const queryTokens = lowerQuery.split(/\s+/).filter(t => t.length > 2);
 
     let allServices = [];
 

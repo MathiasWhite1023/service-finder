@@ -37,7 +37,7 @@ function App() {
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black overflow-hidden">
       <RegisterServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <main className={`flex-1 flex flex-col w-full transition-all duration-700 ${isCentered ? 'items-center justify-center' : 'pt-12'}`}>
+      <main className={`flex-1 flex flex-col w-full transition-all duration-700 ${isCentered ? 'items-center justify-center min-h-[80vh]' : 'pt-12'}`}>
         <div className="w-full container relative z-10">
           <Hero onSearch={handleSearch} />
 
