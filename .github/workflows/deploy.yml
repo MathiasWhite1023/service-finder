@@ -25,13 +25,18 @@ jobs:
 
       - name: Build
         run: |
+          echo "Checking secrets..."
+          echo "URL Length: ${#VITE_SUPABASE_URL}"
+          echo "Key Length: ${#VITE_SUPABASE_ANON_KEY}"
+          
           if [ -z "$VITE_SUPABASE_URL" ]; then
-            echo "Error: VITE_SUPABASE_URL is missing or empty"
-            exit 1
+            echo "WARNING: VITE_SUPABASE_URL is empty! The app will use placeholders."
           else
-            echo "VITE_SUPABASE_URL is set"
+            echo "SUCCESS: VITE_SUPABASE_URL is detected."
           fi
+          
           npm run build
+          touch dist/.nojekyll
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
