@@ -69,15 +69,8 @@ export function Hero({ onSearch }) {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     autoFocus
+                    placeholder={placeholder}
                 />
-
-                {/* Custom Placeholder Overlay to allow for typewriter effect */}
-                {!query && (
-                    <div className="absolute left-[4rem] top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-lg font-light tracking-wide">
-                        {placeholder}
-                        <span className="cursor-blink"></span>
-                    </div>
-                )}
             </form>
         </div>
     );

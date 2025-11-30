@@ -34,23 +34,25 @@ function App() {
   const isCentered = !searchResults && !isSearching;
 
   return (
-    <div className={`min-h-screen flex flex-col transition-all duration-700 ${isCentered ? 'justify-center' : 'pt-12'}`}>
+    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black overflow-hidden">
       <RegisterServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <main className="container relative z-10">
-        <Hero onSearch={handleSearch} />
+      <main className={`flex-1 flex flex-col w-full transition-all duration-700 ${isCentered ? 'items-center justify-center' : 'pt-12'}`}>
+        <div className="w-full container relative z-10">
+          <Hero onSearch={handleSearch} />
 
-        {isSearching && (
-          <div className="mt-12 text-center animate-fade-in">
-            <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-white/20 border-r-white align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-          </div>
-        )}
+          {isSearching && (
+            <div className="mt-12 text-center animate-fade-in">
+              <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-white/20 border-r-white align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            </div>
+          )}
 
-        {searchResults && !isSearching && (
-          <div className="mt-16 animate-fade-in">
-            <SearchResults results={searchResults} query={currentQuery} />
-          </div>
-        )}
+          {searchResults && !isSearching && (
+            <div className="mt-16 animate-fade-in pb-20">
+              <SearchResults results={searchResults} query={currentQuery} />
+            </div>
+          )}
+        </div>
       </main>
 
       {/* Subtle background noise/grain could go here if requested, keeping it clean for now */}
