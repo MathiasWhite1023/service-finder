@@ -3,7 +3,7 @@ import { Hero } from './components/Hero';
 import { SearchResults } from './components/SearchResults';
 import { RegisterServiceModal } from './components/RegisterServiceModal';
 import { Navbar } from './components/Navbar';
-import { performSearch } from './lib/searchLogic';
+import { searchServices } from './lib/searchLogic';
 
 function App() {
   const [results, setResults] = useState([]);
@@ -11,14 +11,14 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (query) => {
+  const handleSearch = async (query) => {
     if (query.toLowerCase() === 'cadastrar') {
       setIsModalOpen(true);
       return;
     }
 
     setSearchQuery(query);
-    const searchResults = performSearch(query);
+    const searchResults = await searchServices(query);
     setResults(searchResults);
     setHasSearched(true);
   };
