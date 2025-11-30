@@ -2,8 +2,8 @@ import { Star, ArrowRight } from 'lucide-react';
 
 export function ServiceCard({ service }) {
     return (
-        <div className="card-minimal group relative overflow-hidden">
-            <div className="aspect-video w-full overflow-hidden bg-gray-900">
+        <div className="card-liquid group relative overflow-hidden">
+            <div className="aspect-video w-full overflow-hidden bg-gray-900/50">
                 <img
                     src={service.image}
                     alt={service.title}
