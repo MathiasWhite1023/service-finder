@@ -1,80 +1,66 @@
-import { Star, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
-import { useRef } from 'react';
+import { Star, ShieldCheck, Clock, ArrowRight } from 'lucide-react';
 
 export function ServiceCard({ service }) {
-    const cardRef = useRef(null);
-
-    const handleMouseMove = (e) => {
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-        cardRef.current.style.setProperty('--mouse-y', `${y}px`);
-    };
-
     return (
-        <div
-            ref={cardRef}
-            onMouseMove={handleMouseMove}
-            className="card-premium spotlight-card group relative overflow-hidden cursor-pointer h-full flex flex-col"
-        >
+        <div className="card-modern group flex flex-col h-full relative overflow-hidden">
+
             {/* Image Section */}
-            <div className="aspect-[4/3] w-full overflow-hidden relative">
+            <div className="relative h-48 overflow-hidden">
                 <img
                     src={service.image}
                     alt={service.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1E1E23] via-transparent to-transparent opacity-90"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1e293b] to-transparent opacity-60"></div>
 
-                {/* Floating Badges */}
-                <div className="absolute top-4 left-4 flex gap-2">
-                    <div className="px-3 py-1 rounded-full text-xs font-bold text-white backdrop-blur-md bg-black/40 border border-white/10 flex items-center gap-1">
-                        <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                        {service.rating}
-                    </div>
-                </div>
-
-                <div className="absolute top-4 right-4">
-                    <div className="px-3 py-1 rounded-full text-xs font-bold text-white backdrop-blur-md bg-white/10 border border-white/20">
-                        {service.category}
-                    </div>
-                </div>
+                {/* Category Badge */}
+                <span className="absolute top-4 left-4 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-xs font-medium text-white">
+                    {service.category}
+                </span>
             </div>
 
             {/* Content Section */}
-            <div className="p-6 flex-1 flex flex-col relative -mt-12">
-                {/* Glass Info Card */}
-                <div className="glass-thin rounded-2xl p-4 mb-4 backdrop-blur-xl bg-[#1E1E23]/80 border border-white/5 shadow-xl">
-                    <h3 className="text-lg font-bold text-white mb-1 line-clamp-1 group-hover:text-purple-300 transition-colors">
+            <div className="p-5 flex flex-col flex-grow">
+
+                {/* Header */}
+                <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors line-clamp-1">
                         {service.title}
                     </h3>
-                    <p className="text-xs text-gray-400 line-clamp-2 mb-3">
-                        {service.description}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1.5">
-                        {service.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-[10px] uppercase tracking-wider font-semibold text-white/60 bg-white/5 px-2 py-1 rounded-md border border-white/5">
-                                {tag}
-                            </span>
-                        ))}
+                    <div className="flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-md">
+                        <Star className="w-3 h-3 fill-current" />
+                        <span className="text-xs font-bold">{service.rating}</span>
                     </div>
                 </div>
 
-                {/* Stats / Footer */}
-                <div className="mt-auto flex items-end justify-between px-1">
-                    <div>
-                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Orçamento</p>
-                        <div className="text-xl font-bold text-white bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                {/* Description */}
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">
+                    {service.description}
+                </p>
+
+                {/* Meta Info */}
+                <div className="flex items-center gap-4 mb-5 text-xs text-gray-500">
+                    <div className="flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
+                        <span>Verificado</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-blue-400" />
+                        <span>Rápido</span>
+                    </div>
+                </div>
+
+                {/* Footer / Action */}
+                <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">A partir de</span>
+                        <span className="text-lg font-bold text-white">
                             {service.price}
-                        </div>
+                        </span>
                     </div>
 
-                    <button className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/20 border border-white/10 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-purple-500 group-hover:border-purple-400">
-                        <ArrowRight className="w-4 h-4 text-white" />
+                    <button className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors group-hover:bg-blue-600 group-hover:text-white">
+                        <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
             </div>

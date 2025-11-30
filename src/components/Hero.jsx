@@ -1,16 +1,16 @@
-import { Search, Plus, ArrowRight } from 'lucide-react';
+```javascript
+import { Search, Plus, ArrowRight, Mic, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const PLACEHOLDERS = [
-    "Procuro um encanador...",
-    "Busco aulas de inglês...",
-    "Preciso de um designer...",
-    "Encontrar um jardineiro..."
+    "Encontrar um encanador...",
+    "Aulas de inglês...",
+    "Design de logotipo...",
+    "Limpeza residencial..."
 ];
 
 export function Hero({ onSearch }) {
     const [query, setQuery] = useState('');
-    const [activeTab, setActiveTab] = useState('search');
     const [placeholder, setPlaceholder] = useState('');
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
@@ -53,88 +53,84 @@ export function Hero({ onSearch }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (activeTab === 'search') {
-            onSearch(query);
-        } else {
-            onSearch('cadastrar');
-        }
+        onSearch(query);
     };
 
     return (
-        <div className="w-full flex flex-col items-center justify-center min-h-[60vh] relative z-10">
-            {/* Main Glass Card */}
-            <div className="glass-frosted rounded-[3rem] p-12 w-full max-w-4xl relative overflow-hidden animate-fade-in-up shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div className="w-full flex flex-col items-center justify-center min-h-[60vh] relative z-10 px-4">
+            
+            {/* Main Content */}
+            <div className="w-full max-w-4xl flex flex-col items-center text-center animate-fade-in">
+                
+                {/* Greeting / Title */}
+                <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2 tracking-tight">
+                    Olá, Visitante
+                </h1>
+                <p className="text-xl text-gray-400 mb-12 font-light">
+                    Como podemos ajudar você hoje?
+                </p>
 
-                {/* Decorative Background Elements inside Card */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 blur-[80px] rounded-full pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+                {/* Gemini-style Search Bar */}
+                <div className="w-full max-w-2xl relative group">
+                    <form onSubmit={handleSubmit} className="relative w-full">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <div className="relative flex items-center bg-[#1e1e1e] border border-white/10 rounded-full shadow-2xl transition-all duration-300 hover:border-white/20 hover:bg-[#252525]">
+                            {/* Left Icon (Plus/Sparkles) */}
+                            <button type="button" className="p-4 text-gray-400 hover:text-white transition-colors">
+                                <Sparkles className="w-6 h-6" />
+                            </button>
 
-                <div className="relative z-10 flex flex-col items-center text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
-                        Encontre o serviço <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-blue-300">
-                            perfeito para você
-                        </span>
-                    </h1>
+                            {/* Input */}
+                            <input
+                                type="text"
+                                className="w-full bg-transparent border-none text-lg text-white placeholder-gray-500 focus:ring-0 focus:outline-none py-4 px-2"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder={placeholder + (isPaused ? '|' : '')}
+                                autoFocus
+                            />
 
-                    <p className="text-lg text-white/70 mb-10 max-w-xl font-light">
-                        Conectamos você aos melhores profissionais da região. Simples, rápido e seguro.
-                    </p>
-
-                    {/* Tabs */}
-                    <div className="flex p-1.5 bg-black/20 backdrop-blur-md rounded-full border border-white/10 mb-8">
-                        <button
-                            onClick={() => setActiveTab('search')}
-                            className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === 'search'
-                                    ? 'bg-white text-black shadow-lg'
-                                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                                }`}
-                        >
-                            Buscar
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('register')}
-                            className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${activeTab === 'register'
-                                    ? 'bg-white text-black shadow-lg'
-                                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                                }`}
-                        >
-                            Cadastrar
-                        </button>
-                    </div>
-
-                    {/* Action Area */}
-                    <div className="w-full max-w-2xl">
-                        {activeTab === 'search' ? (
-                            <form onSubmit={handleSubmit} className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
-                                <div className="relative flex items-center">
-                                    <Search className="absolute left-6 text-white/50 w-6 h-6" />
-                                    <input
-                                        type="text"
-                                        className="w-full bg-white/10 border border-white/10 rounded-full py-5 pl-16 pr-6 text-lg text-white placeholder-white/40 focus:outline-none focus:bg-white/20 focus:border-white/30 transition-all shadow-inner"
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                        placeholder={placeholder + (isPaused ? '|' : '')}
-                                        autoFocus
-                                    />
-                                    <button type="submit" className="absolute right-3 bg-white text-black p-3 rounded-full hover:scale-105 transition-transform shadow-lg">
+                            {/* Right Icons (Mic/Submit) */}
+                            <div className="flex items-center pr-2 gap-1">
+                                <button type="button" className="p-3 text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
+                                    <Mic className="w-5 h-5" />
+                                </button>
+                                {query && (
+                                    <button type="submit" className="p-3 bg-white text-black rounded-full hover:bg-gray-200 transition-colors shadow-lg">
                                         <ArrowRight className="w-5 h-5" />
                                     </button>
-                                </div>
-                            </form>
-                        ) : (
-                            <button
-                                onClick={() => onSearch('cadastrar')}
-                                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-lg font-bold py-5 rounded-full shadow-lg hover:shadow-purple-500/25 transition-all flex items-center justify-center gap-3 group"
-                            >
-                                <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform" />
-                                Começar Cadastro Gratuito
-                            </button>
-                        )}
-                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </form>
                 </div>
+
+                {/* Quick Actions / Suggestions */}
+                <div className="mt-12 flex flex-wrap justify-center gap-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <button 
+                        onClick={() => onSearch('cadastrar')}
+                        className="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:text-white hover:border-white/20 transition-all flex items-center gap-2"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Cadastrar Serviço
+                    </button>
+                    <button 
+                        onClick={() => onSearch('limpeza')}
+                        className="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:text-white hover:border-white/20 transition-all"
+                    >
+                        Limpeza
+                    </button>
+                    <button 
+                        onClick={() => onSearch('manutenção')}
+                        className="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:text-white hover:border-white/20 transition-all"
+                    >
+                        Manutenção
+                    </button>
+                </div>
+
             </div>
         </div>
     );
 }
+```
