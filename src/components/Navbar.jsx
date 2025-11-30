@@ -1,22 +1,10 @@
-import { Plus } from 'lucide-react';
-
-export function Navbar({ onAddService }) {
+export function Navbar() {
     return (
-        <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                {/* Logo */}
-                <h1 className="text-xl font-bold text-gray-900">
-                    ServiceHub
-                </h1>
-
-                {/* Action */}
-                <button
-                    onClick={onAddService}
-                    className="btn-primary flex items-center gap-2"
-                >
-                    <Plus className="w-4 h-4" />
-                    Adicionar Serviço
-                </button>
+        <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
+            <div className="max-w-7xl mx-auto px-6 py-4">
+                <div className="text-sm text-gray-500">
+                    <span className="font-semibold text-gray-900">ServiceHub</span>
+                </div>
             </div>
         </nav>
     );

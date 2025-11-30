@@ -12,11 +12,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = async (query) => {
-    if (query.toLowerCase() === 'cadastrar') {
-      setIsModalOpen(true);
-      return;
-    }
-
     setSearchQuery(query);
     const searchResults = await searchServices(query);
     setResults(searchResults);
@@ -25,13 +20,16 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar onAddService={() => setIsModalOpen(true)} />
+      <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6">
         {!hasSearched ? (
-          <Hero onSearch={handleSearch} />
+          <Hero
+            onSearch={handleSearch}
+            onAddService={() => setIsModalOpen(true)}
+          />
         ) : (
-          <div className="animate-fade-in">
+          <div className="pt-8 animate-fade-in">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold text-gray-900">
                 Resultados para "{searchQuery}"
