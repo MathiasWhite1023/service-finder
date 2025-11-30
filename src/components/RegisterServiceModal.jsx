@@ -1,11 +1,9 @@
-
-import { X, Upload, Check } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 export function RegisterServiceModal({ onClose }) {
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -39,143 +37,125 @@ export function RegisterServiceModal({ onClose }) {
 
             if (error) throw error;
 
-            setSuccess(true);
-            setTimeout(() => {
-                onClose();
-                window.location.reload(); // Simple refresh to show new service
-            }, 2000);
+            alert('Serviço cadastrado com sucesso!');
+            onClose();
+            window.location.reload();
 
         } catch (error) {
-            console.error('Error registering service:', error);
-            alert('Erro ao cadastrar serviço. Tente novamente.');
+            console.error('Error:', error);
+            alert('Erro ao cadastrar. Tente novamente.');
         } finally {
             setLoading(false);
         }
     };
 
-    if (success) {
-        return (
-            <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-                <div className="card-modern p-8 flex flex-col items-center text-center max-w-sm w-full">
-                    <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4 text-green-500">
-                        <Check className="w-8 h-8" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-white mb-2">Sucesso!</h2>
-                    <p className="text-gray-400">Seu serviço foi cadastrado e já está visível para todos.</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="card-modern w-full max-w-lg relative flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
+            <div className="card w-full max-w-lg max-h-[90vh] overflow-auto">
 
                 {/* Header */}
-                <div className="p-6 border-b border-white/5 flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-white">Novo Serviço</h2>
-                    <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
-                        <X className="w-5 h-5" />
+                <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                    <h2 className="text-xl font-bold text-gray-900">Cadastrar Serviço</h2>
+                    <button
+                        onClick={onClose}
+                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                        <X className="w-5 h-5 text-gray-500" />
                     </button>
                 </div>
 
-                {/* Body */}
-                <div className="p-6 overflow-y-auto custom-scrollbar">
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="p-6 space-y-4">
 
-                        {/* Title */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Título do Serviço
+                        </label>
+                        <input
+                            type="text"
+                            name="title"
+                            required
+                            className="input"
+                            placeholder="Ex: Manutenção de Ar Condicionado"
+                            value={formData.title}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">Título do Serviço</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                Categoria
+                            </label>
+                            <select
+                                name="category"
+                                className="input"
+                                value={formData.category}
+                                onChange={handleChange}
+                            >
+                                <option>Manutenção</option>
+                                <option>Limpeza</option>
+                                <option>Aulas</option>
+                                <option>Tecnologia</option>
+                                <option>Design</option>
+                                <option>Outros</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                Preço
+                            </label>
                             <input
                                 type="text"
-                                name="title"
+                                name="price"
                                 required
-                                className="input-modern"
-                                placeholder="Ex: Manutenção de Ar Condicionado"
-                                value={formData.title}
+                                className="input"
+                                placeholder="R$ 150"
+                                value={formData.price}
                                 onChange={handleChange}
                             />
                         </div>
+                    </div>
 
-                        {/* Category & Price */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1.5">Categoria</label>
-                                <select
-                                    name="category"
-                                    className="input-modern appearance-none"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                >
-                                    <option>Manutenção</option>
-                                    <option>Limpeza</option>
-                                    <option>Aulas</option>
-                                    <option>Tecnologia</option>
-                                    <option>Design</option>
-                                    <option>Outros</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-1.5">Preço Base</label>
-                                <input
-                                    type="text"
-                                    name="price"
-                                    required
-                                    className="input-modern"
-                                    placeholder="Ex: R$ 150"
-                                    value={formData.price}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            Descrição
+                        </label>
+                        <textarea
+                            name="description"
+                            required
+                            rows="4"
+                            className="input resize-none"
+                            placeholder="Descreva o serviço..."
+                            value={formData.description}
+                            onChange={handleChange}
+                        />
+                    </div>
 
-                        {/* Description */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">Descrição</label>
-                            <textarea
-                                name="description"
-                                required
-                                rows="4"
-                                className="input-modern resize-none"
-                                placeholder="Descreva detalhadamente o que você oferece..."
-                                value={formData.description}
-                                onChange={handleChange}
-                            />
-                        </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                            URL da Imagem (Opcional)
+                        </label>
+                        <input
+                            type="url"
+                            name="image_url"
+                            className="input"
+                            placeholder="https://..."
+                            value={formData.image_url}
+                            onChange={handleChange}
+                        />
+                    </div>
 
-                        {/* Image URL */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">URL da Imagem (Opcional)</label>
-                            <div className="relative">
-                                <Upload className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
-                                <input
-                                    type="url"
-                                    name="image_url"
-                                    className="input-modern pl-10"
-                                    placeholder="https://..."
-                                    value={formData.image_url}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Submit Button */}
+                    <div className="pt-4">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-primary mt-4 flex items-center justify-center gap-2"
+                            className="w-full btn-primary"
                         >
-                            {loading ? (
-                                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            ) : (
-                                <>
-                                    <span>Publicar Serviço</span>
-                                    <Check className="w-4 h-4" />
-                                </>
-                            )}
+                            {loading ? 'Cadastrando...' : 'Cadastrar Serviço'}
                         </button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     );

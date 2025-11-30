@@ -24,25 +24,23 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen text-white relative overflow-x-hidden">
-      <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar onAddService={() => setIsModalOpen(true)} />
 
-      <main className="container mx-auto px-4 pt-24 pb-12 relative z-10">
-        <div className={`transition-all duration-700 ease-in-out ${hasSearched ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {!hasSearched ? (
           <Hero onSearch={handleSearch} />
-        </div>
-
-        {hasSearched && (
-          <div className="animate-fade-in-up">
+        ) : (
+          <div className="animate-fade-in">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-white/90">
+              <h2 className="text-2xl font-bold text-gray-900">
                 Resultados para "{searchQuery}"
               </h2>
               <button
                 onClick={() => setHasSearched(false)}
-                className="text-sm text-white/60 hover:text-white transition-colors"
+                className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
               >
-                ← Voltar para busca
+                ← Nova busca
               </button>
             </div>
             <SearchResults results={results} />
@@ -50,10 +48,9 @@ function App() {
         )}
       </main>
 
-      <RegisterServiceModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {isModalOpen && (
+        <RegisterServiceModal onClose={() => setIsModalOpen(false)} />
+      )}
     </div>
   );
 }
