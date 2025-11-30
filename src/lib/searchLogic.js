@@ -1,6 +1,26 @@
 import { services as mockServices } from './mockData';
 import { supabase } from './supabaseClient';
 
+export const INTENT_SEARCH = 'SEARCH';
+export const INTENT_REGISTER = 'REGISTER';
+
+export function detectIntent(query) {
+    if (!query) return INTENT_SEARCH;
+
+    const lower = query.toLowerCase();
+    const registerKeywords = [
+        'cadastrar', 'cadastro', 'registrar', 'registro',
+        'sou prestador', 'oferecer serviço', 'vender serviço',
+        'trabalhar', 'anunciar', 'criar conta'
+    ];
+
+    if (registerKeywords.some(keyword => lower.includes(keyword))) {
+        return INTENT_REGISTER;
+    }
+
+    return INTENT_SEARCH;
+}
+
 // Helper to calculate score (same logic as before)
 function calculateScore(service, lowerQuery, queryTokens) {
     let score = 0;

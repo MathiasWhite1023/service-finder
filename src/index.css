@@ -1,28 +1,38 @@
 :root {
-  /* Premium Color Palette - HSL */
-  --primary: 220 70% 50%; /* Vibrant Blue */
-  --primary-foreground: 210 40% 98%;
-  
-  --background: 220 30% 98%; /* Very light cool gray */
-  --foreground: 222 47% 11%; /* Deep dark blue-gray */
+  /* Minimalist Dark Mode Palette */
+  --background: 0 0% 4%;
+  /* #0a0a0a - Deep Black */
+  --foreground: 0 0% 98%;
+  /* #fafafa - Almost White */
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  --card: 0 0% 8%;
+  /* #141414 */
+  --card-foreground: 0 0% 98%;
 
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  --popover: 0 0% 4%;
+  --popover-foreground: 0 0% 98%;
 
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --primary: 0 0% 98%;
+  /* White for primary actions */
+  --primary-foreground: 0 0% 4%;
 
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 98%;
 
-  --radius: 0.75rem;
-  
-  /* Gradients */
-  --gradient-hero: linear-gradient(135deg, hsl(220 70% 50%) 0%, hsl(260 70% 60%) 100%);
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 60%;
+
+  --accent: 0 0% 12%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 0 0% 80%;
+
+  --radius: 0.5rem;
 }
 
 * {
@@ -41,30 +51,49 @@ body {
 
 /* Utilities */
 .container {
-  max-width: 1200px;
+  max-width: 1000px;
+  /* Tighter container for minimalism */
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+/* Minimalist Input */
+.input-minimal {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  transition: all 0.3s ease;
+  border-radius: 0;
 }
 
+.input-minimal:focus {
+  outline: none;
+  border-bottom-color: hsl(var(--foreground));
+}
+
+.input-minimal::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Minimalist Button */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
+  border-radius: 9999px;
+  /* Pill shape */
   font-weight: 500;
   transition: all 0.2s ease;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
+  font-size: 0.875rem;
 }
 
 .btn-primary {
@@ -74,21 +103,28 @@ body {
 
 .btn-primary:hover {
   opacity: 0.9;
-  transform: translateY(-1px);
+  transform: scale(1.02);
 }
 
-.input-field {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid hsl(var(--input));
-  background: hsl(var(--card));
+.btn-outline {
+  background: transparent;
+  border-color: hsl(var(--border));
   color: hsl(var(--foreground));
-  transition: all 0.2s;
 }
 
-.input-field:focus {
-  outline: none;
-  border-color: hsl(var(--primary));
-  box-shadow: 0 0 0 2px hsla(var(--primary) / 0.2);
+.btn-outline:hover {
+  background: hsl(var(--secondary));
+}
+
+/* Card Reset */
+.card-minimal {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.card-minimal:hover {
+  border-color: hsl(var(--muted-foreground));
 }
