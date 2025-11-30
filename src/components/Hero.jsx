@@ -28,13 +28,13 @@ export function Hero({ onSearch }) {
             timer = setTimeout(() => {
                 setIsPaused(false);
                 setIsDeleting(true);
-            }, 2000); // Wait 2s before deleting
+            }, 2000);
         } else if (isDeleting) {
             if (charIndex > 0) {
                 timer = setTimeout(() => {
                     setPlaceholder(currentText.substring(0, charIndex - 1));
                     setCharIndex(charIndex - 1);
-                }, 50); // Delete speed
+                }, 50);
             } else {
                 setIsDeleting(false);
                 setPlaceholderIndex((prev) => (prev + 1) % PLACEHOLDERS.length);
@@ -44,7 +44,7 @@ export function Hero({ onSearch }) {
                 timer = setTimeout(() => {
                     setPlaceholder(currentText.substring(0, charIndex + 1));
                     setCharIndex(charIndex + 1);
-                }, 100); // Typing speed
+                }, 100);
             } else {
                 setIsPaused(true);
             }
@@ -59,13 +59,13 @@ export function Hero({ onSearch }) {
     };
 
     return (
-        <div className="w-full flex flex-col items-center justify-center animate-fade-in px-4">
-            <form onSubmit={handleSubmit} className="input-liquid-container group relative">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-white transition-colors duration-300 z-10" />
+        <div className="w-full flex flex-col items-center justify-center px-4">
+            <form onSubmit={handleSubmit} className="input-premium-container group relative animate-fade-in-up animate-pulse-glow">
+                <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-7 w-7 text-purple-300 group-focus-within:text-purple-200 transition-all duration-500 z-10 drop-shadow-lg" />
 
                 <input
                     type="text"
-                    className="input-liquid"
+                    className="input-premium"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     autoFocus
