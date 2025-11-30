@@ -1,4 +1,4 @@
-import { Search, ArrowRight } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useState } from 'react';
 
 export function Hero({ onSearch }) {
@@ -10,38 +10,18 @@ export function Hero({ onSearch }) {
     };
 
     return (
-        <div className="min-h-[60vh] flex flex-col justify-center items-center text-center px-4">
-            <div className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                <h1 className="text-3xl md:text-5xl font-light tracking-tight mb-8 text-white">
-                    O que você precisa hoje?
-                </h1>
-
-                <form onSubmit={handleSubmit} className="relative w-full group">
-                    <input
-                        type="text"
-                        className="input-minimal text-center md:text-left pl-4 md:pl-12 pr-12 pb-4"
-                        placeholder="Ex: Encanador, ou 'Quero cadastrar meu serviço'"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        autoFocus
-                    />
-                    <Search className="absolute left-0 top-0 h-6 w-6 text-gray-500 hidden md:block mt-1" />
-
-                    <button
-                        type="submit"
-                        className="absolute right-0 top-0 p-2 text-white opacity-50 hover:opacity-100 transition-opacity"
-                    >
-                        <ArrowRight className="h-6 w-6" />
-                    </button>
-                </form>
-
-                <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-                    <span>Sugestões:</span>
-                    <button onClick={() => { setQuery('encanador'); onSearch('encanador') }} className="hover:text-white transition-colors">Encanador</button>
-                    <button onClick={() => { setQuery('design'); onSearch('design') }} className="hover:text-white transition-colors">Design</button>
-                    <button onClick={() => { setQuery('quero cadastrar'); onSearch('quero cadastrar') }} className="hover:text-white transition-colors text-blue-400">Cadastrar Serviço</button>
-                </div>
-            </div>
+        <div className="w-full flex flex-col items-center justify-center animate-fade-in">
+            <form onSubmit={handleSubmit} className="input-glow-container group">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-white transition-colors duration-300" />
+                <input
+                    type="text"
+                    className="input-glow"
+                    placeholder="O que você procura?"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    autoFocus
+                />
+            </form>
         </div>
     );
 }

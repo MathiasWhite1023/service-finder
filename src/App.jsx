@@ -27,51 +27,33 @@ function App() {
       const results = await searchServices(query)
       setSearchResults(results)
       setIsSearching(false)
-
-      // Smooth scroll to results
-      const resultsElement = document.getElementById('results-section')
-      if (resultsElement) {
-        resultsElement.scrollIntoView({ behavior: 'smooth' })
-      }
-    }, 600)
+    }, 800)
   }
 
+  // If we have results, show them at the top. If not, center the search bar.
+  const isCentered = !searchResults && !isSearching;
+
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black">
+    <div className={`min-h-screen flex flex-col transition-all duration-700 ${isCentered ? 'justify-center' : 'pt-12'}`}>
       <RegisterServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      {/* Minimalist Header - Only Logo */}
-      <header className="py-6 absolute top-0 w-full z-50">
-        <div className="container flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setSearchResults(null)}>
-            <div className="h-6 w-6 bg-white rounded-full"></div>
-            <h1 className="text-lg font-bold tracking-tighter">
-              ServiceHub
-            </h1>
-          </div>
-        </div>
-      </header>
-
-      <main className="flex-1 flex flex-col">
+      <main className="container relative z-10">
         <Hero onSearch={handleSearch} />
 
         {isSearching && (
-          <div className="py-20 text-center">
-            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-white border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-            <p className="mt-4 text-sm text-gray-500 animate-pulse">Processando...</p>
+          <div className="mt-12 text-center animate-fade-in">
+            <div className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-white/20 border-r-white align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
           </div>
         )}
 
         {searchResults && !isSearching && (
-          <div id="results-section" className="bg-card min-h-[50vh] border-t border-border">
+          <div className="mt-16 animate-fade-in">
             <SearchResults results={searchResults} query={currentQuery} />
           </div>
         )}
       </main>
 
-      <footer className="py-8 text-center text-xs text-gray-600">
-        <p>&copy; 2024 ServiceHub. Minimalist & AI Powered.</p>
-      </footer>
+      {/* Subtle background noise/grain could go here if requested, keeping it clean for now */}
     </div>
   )
 }

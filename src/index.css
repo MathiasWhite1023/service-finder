@@ -1,38 +1,18 @@
 :root {
-  /* Minimalist Dark Mode Palette */
-  --background: 0 0% 4%;
-  /* #0a0a0a - Deep Black */
-  --foreground: 0 0% 98%;
-  /* #fafafa - Almost White */
+  /* Ultra-Minimalist Palette */
+  --background: 0 0% 0%;
+  /* Pure Black */
+  --foreground: 0 0% 100%;
+  /* Pure White */
 
-  --card: 0 0% 8%;
-  /* #141414 */
-  --card-foreground: 0 0% 98%;
-
-  --popover: 0 0% 4%;
-  --popover-foreground: 0 0% 98%;
-
-  --primary: 0 0% 98%;
-  /* White for primary actions */
-  --primary-foreground: 0 0% 4%;
-
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 0 0% 98%;
-
-  --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 60%;
-
-  --accent: 0 0% 12%;
-  --accent-foreground: 0 0% 98%;
-
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-
+  --card: 0 0% 5%;
   --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 0 0% 80%;
 
-  --radius: 0.5rem;
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 0%;
+
+  --radius: 9999px;
+  /* Pill shape default */
 }
 
 * {
@@ -42,89 +22,119 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Subtle Aurora Background */
+  background:
+    radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+    black;
+}
+
+/* The Glowing Search Bar */
+.input-glow-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.input-glow-container:hover {
+  transform: scale(1.01);
+}
+
+.input-glow {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 1.25rem 3.5rem;
+  /* Space for icon */
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow:
+    0 4px 24px -1px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.input-glow:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.05),
+    0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+.input-glow::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+}
+
+/* Minimalist Card */
+.card-minimal {
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-minimal:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 /* Utilities */
 .container {
-  max-width: 1000px;
-  /* Tighter container for minimalism */
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Minimalist Input */
-.input-minimal {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  padding: 1rem 0;
-  font-size: 1.5rem;
-  font-weight: 300;
-  transition: all 0.3s ease;
-  border-radius: 0;
-}
-
-.input-minimal:focus {
-  outline: none;
-  border-bottom-color: hsl(var(--foreground));
-}
-
-.input-minimal::placeholder {
-  color: hsl(var(--muted-foreground));
-}
-
-/* Minimalist Button */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  /* Pill shape */
-  font-weight: 500;
-  transition: all 0.2s ease;
   cursor: pointer;
-  border: 1px solid transparent;
-  outline: none;
-  font-size: 0.875rem;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
 .btn-primary {
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background: white;
+  color: black;
+  padding: 0.75rem 2rem;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background: #f0f0f0;
   transform: scale(1.02);
 }
 
-.btn-outline {
-  background: transparent;
-  border-color: hsl(var(--border));
-  color: hsl(var(--foreground));
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-outline:hover {
-  background: hsl(var(--secondary));
-}
-
-/* Card Reset */
-.card-minimal {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform 0.2s ease;
-}
-
-.card-minimal:hover {
-  border-color: hsl(var(--muted-foreground));
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
 }
